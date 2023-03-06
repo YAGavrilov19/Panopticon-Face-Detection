@@ -17,3 +17,8 @@ Average_Amount_Of_People INT,
 
 )
 SELECT * FROM CCTV_Overall_Data
+CREATE TABLE Users(
+USERID INT PRIMARY KEY,
+  Username varchar(500) NOT NULL,
+  Password varchar(500) NOT NULL
+  );
