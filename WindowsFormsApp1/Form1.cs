@@ -15,6 +15,7 @@ using System.Text.RegularExpressions;
 using System.IO;
 using System.Threading;
 using System.Diagnostics;
+using Capture = Emgu.CV.Capture;
 
 namespace WindowsFormsApp1
 {
@@ -32,7 +33,7 @@ namespace WindowsFormsApp1
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            videoCapture = new Capture();
+            videoCapture = new Emgu.CV.Capture();
             videoCapture.ImageGrabbed += ProcessFrame;
             videoCapture.Start();
         }
@@ -41,7 +42,15 @@ namespace WindowsFormsApp1
         {
             videoCapture.Retrieve(frame, 0);
             currentFrame = frame.ToImage<Bgr, Byte>().Resize(pictureCapture.Width, pictureCapture.Height, Inter.Cubic);
+            pictureCapture.Image = currentFrame.Bitmap;
+            if (currentFrame != null)
+                currentFrame.Dispose();
         }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            videoCapture.Pause();
+            pictureCapture.Image = null;
+        }
     }
 }
