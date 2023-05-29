@@ -2,7 +2,7 @@ using AForge.Video;
 using AForge.Video.DirectShow;
 using Emgu.CV;
 using Emgu.CV.Structure;
-
+using FaceDetectionCamera;
 
 namespace FaceDetectionCamera
 {
@@ -10,11 +10,12 @@ namespace FaceDetectionCamera
     {
         FilterInfoCollection filter;
         VideoCaptureDevice device;
-        int facesDetected = 0;
-        int maxFacesDetected = 0;  // Maximum faces detected in the last hour
+       public int facesDetected = 0;
+       public int maxFacesDetected = 0;  // Maximum faces detected in the last hour
         DateTime startTime;
-        int selectedDeviceIndex;
-
+        DateTime cTime = DateTime.Now;
+        public int selectedDeviceIndex;
+        private LogDataRepository _logRepository;
         static readonly CascadeClassifier cascadeClassifier = new CascadeClassifier("haarcascade_frontalface_alt_tree.xml");
         //Detects camera devices and selects the face detecting algorithm
 
@@ -23,8 +24,9 @@ namespace FaceDetectionCamera
             InitializeComponent();
             filter = new FilterInfoCollection(FilterCategory.VideoInputDevice);
             device = new VideoCaptureDevice();
-            //Sets up the camera as the device used in the program
-        }
+            _logRepository = new LogDataRepository();
+        //Sets up the camera as the device used in the program
+    }
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -35,7 +37,7 @@ namespace FaceDetectionCamera
                 cboDevice.Items.Add($"{selectedDeviceIndex + 1}: {filter[selectedDeviceIndex].Name}");
             }
 
-            cboDevice.SelectedIndex = 0;
+
             lblFacesDetected.Text = "0";
             lblMaxFacesDetected.Text = "0";
             btnStop.Enabled = false;
@@ -81,6 +83,7 @@ namespace FaceDetectionCamera
                 }
                 facesDetected = rectangles.Distinct().Count();
             }
+            //Creates the rectangles surrounding the faces along with counting them
             if (facesDetected > maxFacesDetected)
             {
                 maxFacesDetected = facesDetected;
@@ -94,7 +97,6 @@ namespace FaceDetectionCamera
                 startTime = DateTime.Now;
             }
             picBox.Image = bitmap;
-            //Crates the rectangles surrounding the faces along with counting them
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -126,21 +128,8 @@ namespace FaceDetectionCamera
 
         private void btnSaveLogs_Click(object sender, EventArgs e)
         {
-            if (lbLogs.Items.Count > 0)
-            {
-                //const string sPath = "logs.txt";
-                string sPath = DateTime.Now.ToString("dd-MM-yyyy-HH-mm-ss") + "-logs.txt";
-                StreamWriter SaveFile = new StreamWriter(sPath);
-                foreach (var item in lbLogs.Items)
-                {
-                    SaveFile.WriteLine(item);
-                }
-                SaveFile.Close();
-                MessageBox.Show("Logs saved!", "Face Detection Camera");
-            }
-            else
-                MessageBox.Show("Nothing to save.", "Face Detection Camera");
+           // _logRepository.SaveLogs(selectedDeviceIndex,  facesDetected, LogDataRepository.);
+            //Saves the logs
         }
-        //Saves the logs to a file along with checking if there's any
     }
 }
