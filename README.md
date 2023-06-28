@@ -1,16 +1,3 @@
 # 2223-10: On the job training (OTJ) project
-
-## 1. Introduction
-
-This is your personal repository for the OTJ project. **Do not create any projects until requested by your teacher!**
-
-## 2. Project definition & links
-
-You're required to follow and implement the bare minimum of functionality as per your assignment. You're free to extend the project and add more features.
-
-[Assignment's README](https://github.com/codingburgas/2223-otj-11-project-definition)
-
-The README will be updated frequently to reflect every stage of the project.
-
-
-**Note:** if you receive error 404, please ensure you're logged in GitHub. Be sure to clear stale credentials in Credential Manager (Windows). If you still receive 404, please contact your teacher.
+## Panopticon
+Panopticon is a security system that utilises EMGU, a cross-platform .NET wrapper for OpenCV, and AForge.NET to implement facial recognition and detection. This system aims to provide information about the number of individuals present in a room and the time of their appearance. It can be used by companies to help them save on a security budget and to monitor more efficiently.
